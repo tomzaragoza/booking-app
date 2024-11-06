@@ -4,6 +4,7 @@ import { GetServerSidePropsContext } from "next";
 import { BookingType } from "@/types";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
+import { getBookingById } from "@/lib/bookings";
 
 /**
  * Get the booking details if they exist
@@ -12,15 +13,13 @@ import { useRouter } from "next/router";
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { id } = context.params as { id: string };
 
-  const response = await fetch(`${process.env.BOOKER_URL}/booking/${id}`);
-  if (!response.ok) {
+  if (!id) {
     return {
       notFound: true,
     };
   }
 
-  const bookingResponse = await response.json();
-  const booking: BookingType = { id, ...bookingResponse };
+  const booking = await getBookingById(id);
 
   return {
     props: { booking },

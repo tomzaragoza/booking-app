@@ -1,11 +1,12 @@
 import BookingCard from "@/components/bookings/BookingCard";
-import { BookingType, BookingIdType } from "@/types";
+import { getBookingsByName } from "@/lib/bookings";
+import { BookingType } from "@/types";
 import { GetServerSidePropsContext } from "next";
 import Link from "next/link";
 import { useState } from "react";
 
 /**
- * Get all bookings based on the "logged in" user
+ * Get all bookings based on the "logged in" user's name
  * @param context
  * @returns
  */
@@ -18,21 +19,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
 
-  const results = await fetch(
-    `${process.env.BOOKER_URL}/booking?firstname=${firstName}&lastname=${lastName}`
-  );
-  const bookingsById: BookingIdType[] = await results.json();
-
-  const bookings: BookingType[] = await Promise.all(
-    bookingsById.map(async (booking: BookingIdType) => {
-      const response = await fetch(
-        `${process.env.BOOKER_URL}/booking/${booking.bookingid}`
-      );
-      const bookingResponse = await response.json();
-
-      return { id: booking.bookingid, ...bookingResponse };
-    })
-  );
+  const bookings = await getBookingsByName(firstName, lastName);
 
   return {
     props: { bookings },
@@ -42,7 +29,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 /**
  * Renders a page for viewing all bookings
  *
- * @param {BookingType}
+ * @param {BookingType[]}
  * @returns
  */
 export default function BookingsPage({
@@ -52,7 +39,7 @@ export default function BookingsPage({
 }) {
   const [bookings, setBookings] = useState<BookingType[]>(initialBookings);
 
-  // Remove remove bookings from display as they are deleted
+  // Remove bookings from DOM as they are deleted from external service
   function removeBooking(id: number) {
     setBookings((prevBookings) =>
       prevBookings.filter((booking: BookingType) => booking.id !== id)
