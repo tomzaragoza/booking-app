@@ -2,6 +2,8 @@
 
 This is a Booking Application built with Next.js and Tailwind CSS.
 
+This project requires Node version 16+ to run.
+
 ## Running Locally
 
 ### 1. Install Packages
@@ -28,4 +30,6 @@ Now, run the app
 
 `npm run dev`
 
-and view the app in your browser at `http://localhost:3000`
+and view the app in your browser at
+
+`http://localhost:3000`
