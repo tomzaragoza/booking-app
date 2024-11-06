@@ -1,6 +1,7 @@
 import BookingCard from "@/components/bookings/BookingCard";
 import { BookingType, BookingIdType } from "@/types";
 import { GetServerSidePropsContext } from "next";
+import Link from "next/link";
 import { useState } from "react";
 
 /**
@@ -63,12 +64,12 @@ export default function BookingsPage({
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-xl">Bookings</h1>
         {bookings.length > 0 && (
-          <a
+          <Link
             href="/bookings/new"
             className="inline-flex justify-center rounded-md bg-zinc-800 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-zinc-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-600"
           >
             + New Booking
-          </a>
+          </Link>
         )}
       </div>
 
@@ -86,12 +87,12 @@ export default function BookingsPage({
         ) : (
           <>
             <p className="text-black pb-8">No bookings yet!</p>
-            <a
+            <Link
               href="/bookings/new"
               className="inline-flex justify-center rounded-md bg-zinc-800 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-zinc-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-600"
             >
               + Create a Booking
-            </a>
+            </Link>
           </>
         )}
       </div>
